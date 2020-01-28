@@ -22,6 +22,7 @@ PYTEST_TEMPLATE = [
 ]
 ATCODER_URL = 'https://atcoder.jp/'
 CONTEST_INFO = {}
+PATH = os.path.dirname(__file__)
 
 
 def login():
@@ -45,7 +46,7 @@ def login():
         print('Login failed!')
         exit()
     print(BeautifulSoup(res.text, 'lxml').select('div.alert')[0].text)
-    with open(os.path.dirname(__file__) + 'cookie.pkl', 'wb') as f:
+    with open(os.path.join(PATH, 'cookie.pkl'), 'wb') as f:
         pickle.dump(res.cookies, f)
 
 
@@ -56,9 +57,9 @@ def is_login(cookies):  # cookiesが有効どうか確認する
 
 
 def get_contest_info(contest_name):
-    if not os.path.isfile(os.path.dirname(__file__) + 'cookie.pkl'):
+    if not os.path.isfile(os.path.join(PATH, 'cookie.pkl')):
         login()
-    with open(os.path.dirname(__file__) + 'cookie.pkl', 'rb') as f:
+    with open(os.path.join(PATH, 'cookie.pkl'), 'rb') as f:
         cookies = pickle.load(f)
     if not(is_login(cookies)):
         print('cookies is invalid \nPlease login again')
