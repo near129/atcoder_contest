@@ -5,8 +5,8 @@ AtCoderのサイトから情報を取得し、Pythonのユニットテストを�
 ## 必要なライブラリ
 
 - beautifulsoup4
-- lxml
 - requests
+- lxml (なくても動くはず)
 - pytest(ユニットテストを実行するときに必要)
 
 ## 使い方
@@ -26,31 +26,40 @@ https://atcoder.jp/contests/コンテスト名
 そして下のようなディレクトリとファイルを作る
 
 ```
-AtCoderBeginnerContest151
-├── A-NextAlphabet
+abc140
+├── a
+│   ├── IN
+│   │   ├── 001
+│   │   └── 002
 │   ├── Main.py
 │   └── test_a.py
-├── B-AchievetheGoal
+├── b
+│   ├── IN
+│   │   ├── 001
+│   │   ├── 002
+│   │   └── 003
 │   ├── Main.py
 │   └── test_b.py
-├── C-WelcometoAtCoder
-│   ├── Main.py
-│   └── test_c.py
-├── D-MazeMaster
-│   ├── Main.py
-│   └── test_d.py
-├── E-Max-MinSums
-│   ├── Main.py
-│   └── test_e.py
-└── F-EncloseAll
+       .
+       .
+       .
+       .
+└── f
+    ├── IN
+    │   ├── 001
+    │   ├── 002
+    │   ├── 003
+    │   └── 004
     ├── Main.py
     └── test_f.py
 ```
 
+- テスト  
 `Main.py`に問題の回答を作り、問題のディレクトリを指定するか、そのディレクトリ内に入り、
 
 ```
-$pytest
+$pytest a
 ```
 を実行し確認する。
+- 'IN'ディレクトリはデバック用に入力例のテキストファイル入っている。
 
