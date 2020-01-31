@@ -16,8 +16,8 @@ PYTEST_TEMPLATE = [
     ')',
     'def test_1(IN, OUT):',
     '    cp = subprocess.run(["python", "Main.py"], encoding="utf-8", ',
-    '                        input=IN, stdout=subprocess.PIPE),',
-    '                        cwd=os.path.dirname(__file__))'
+    '                        input=IN, stdout=subprocess.PIPE,',
+    '                        cwd=os.path.dirname(__file__))',
     '    assert cp.stdout == OUT',
     ''
 ]
