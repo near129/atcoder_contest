@@ -5,9 +5,10 @@ import requests
 from bs4 import BeautifulSoup
 
 PYTEST_TEMPLATE = [
-    'import os',
-    'import subprocess',
+    'import sys',
+    'from io import StringIO',
     'import pytest',
+    'import Main',
     '',
     '',
     '@pytest.mark.parametrize(',
@@ -15,15 +16,23 @@ PYTEST_TEMPLATE = [
     '    ]',
     ')',
     'def test_1(IN, OUT):',
-    '    cp = subprocess.run(["python", "Main.py"], encoding="utf-8", ',
-    '                        input=IN, stdout=subprocess.PIPE,',
-    '                        cwd=os.path.dirname(__file__))',
-    '    assert cp.stdout == OUT',
+    '    sys.stdin = StringIO(IN)',
+    '    answer = str(Main.resolve()) + "\\n"',
+    '    assert answer == OUT',
+    ''
+]
+MAIN_TEMPLATE = [
+    'def resolve():',
+    '    pass',
+    '',
+    '',
+    'if __name__ == "__main__":',
+    '    answer = resolve()',
+    '    print(answer)',
     ''
 ]
 ATCODER_URL = 'https://atcoder.jp/'
 CONTEST_INFO = {}
-# PATH = os.path.dirname(__file__)
 CURRENT_PATH = Path(__file__).parent
 
 
@@ -111,6 +120,7 @@ def make_testcase_text(directory, problem_name):
 def make_test_file_directory():
     contest_id = CONTEST_INFO['contest_id']
     contest_dir = Path(contest_id)
+    print(contest_dir.absolute())
     contest_dir.mkdir()
     for i, name in enumerate(CONTEST_INFO['problem_names']):
         directory = contest_dir / Path(chr(97 + i))
@@ -119,15 +129,16 @@ def make_test_file_directory():
                               zip(CONTEST_INFO[name]['IN'],
                                   CONTEST_INFO[name]['OUT'])])
         with open(directory / Path(f'test_{chr(97 + i)}.py'), 'w') as f:
-            f.write('\n'.join(PYTEST_TEMPLATE[:7] + [example] +
-                              PYTEST_TEMPLATE[7:]))
-        with open(directory / Path('Main.py'), 'w'):
-            pass
+            f.write('\n'.join(PYTEST_TEMPLATE[:8] + [example] +
+                              PYTEST_TEMPLATE[8:]))
+        with open(directory / Path('Main.py'), 'w') as f:
+            f.write('\n'.join(MAIN_TEMPLATE))
         make_testcase_text(directory, name)
     print('Files created successfully!!')
 
 
 def main():
+
     contest_name = sys.argv[1]
     get_contest_info(contest_name)
     make_test_file_directory()
