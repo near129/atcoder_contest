@@ -10,11 +10,11 @@ PYTEST_TEMPLATE = [
     'import pytest',
     'import Main',
     '',
+    'params = {',
+    '}',
     '',
-    '@pytest.mark.parametrize(',
-    '    "IN, OUT", [',
-    '    ]',
-    ')',
+    '@pytest.mark.parametrize("IN, OUT",',
+    '                         list(params.values()), ids=list(params.keys()))',
     'def test_1(IN, OUT):',
     '    sys.stdin = StringIO(IN)',
     '    answer = str(Main.solve()) + "\\n"',
@@ -122,12 +122,13 @@ def make_test_file_directory():
     for i, name in enumerate(CONTEST_INFO['problem_names']):
         directory = contest_dir / Path(chr(97 + i))
         directory.mkdir(parents=True)
-        example = ',\n'.join([f'{" " * 8}("""{i}""", """{o}""")' for i, o in
-                              zip(CONTEST_INFO[name]['IN'],
-                                  CONTEST_INFO[name]['OUT'])])
+        example = []
+        for n, (In, Out) in enumerate(zip(CONTEST_INFO[name]['IN'],
+                                          CONTEST_INFO[name]['OUT'])):
+            example.append(f'{" " * 4}"ex.{n}": ("""{In}""", """{Out}""")')
         with open(directory / Path(f'test_{chr(97 + i)}.py'), 'w') as f:
-            f.write('\n'.join(PYTEST_TEMPLATE[:8] + [example] +
-                              PYTEST_TEMPLATE[8:]))
+            f.write('\n'.join(PYTEST_TEMPLATE[:6] + [',\n'.join(example)] +
+                              PYTEST_TEMPLATE[6:]))
         with open(directory / Path('Main.py'), 'w') as f:
             f.write('\n'.join(MAIN_TEMPLATE))
         make_testcase_text(directory, name)
