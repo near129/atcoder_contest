@@ -17,17 +17,17 @@ PYTEST_TEMPLATE = [
     ')',
     'def test_1(IN, OUT):',
     '    sys.stdin = StringIO(IN)',
-    '    answer = str(Main.resolve()) + "\\n"',
+    '    answer = str(Main.solve()) + "\\n"',
     '    assert answer == OUT',
     ''
 ]
 MAIN_TEMPLATE = [
-    'def resolve():',
+    'def solve():',
     '    pass',
     '',
     '',
     'if __name__ == "__main__":',
-    '    answer = resolve()',
+    '    answer = solve()',
     '    print(answer)',
     ''
 ]
