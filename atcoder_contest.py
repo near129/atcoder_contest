@@ -91,11 +91,8 @@ def get_contest_info(contest_id):
     problem_names = soup.select('span.h2')
     CONTEST_INFO['problem_names'] = list(map(lambda x: x.text.replace(' ', ''),
                                              problem_names))
-    # for name in CONTEST_INFO['problem_names']:
-    #         CONTEST_INFO[name] = {}
-    # problem_io_styles = soup.select('.lang-ja > .io-style')
-    # for name, io in zip(problem_names, problem_io_styles):
-    for name, io in zip(CONTEST_INFO['problem_names'], soup.select('.lang-ja')):
+    for name, io in zip(CONTEST_INFO['problem_names'],
+                        soup.select('.lang-ja')):
         CONTEST_INFO[name] = {}
         examples = io.select('.io-style ~ div')
         # しっかりサンプルケースを取得しているか確認
